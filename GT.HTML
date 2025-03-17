@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas House Drawing</title>
+</head>
+<body>
+    <canvas id="houseCanvas" width="3740" height="1860"></canvas>
+    <script>
+        const canvas = document.getElementById("houseCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Draw background
+        ctx.fillStyle = "#87CEEB"; // Sky color
+        ctx.fillRect(0, 20, canvas.width, canvas.height);
+
+        // Draw ground
+        ctx.fillStyle = "#228B22"; // Green grass
+        ctx.fillRect(0, 1500, canvas.width, 600);
+
+        // Draw house base
+        ctx.fillStyle = "#FF4500";
+        ctx.fillRect(1300, 800, 1200, 700);
+
+        // Draw roof
+        ctx.beginPath();
+        ctx.moveTo(1900, 50);
+        ctx.lineTo(2600, 800);
+        ctx.lineTo(1200, 800);
+        ctx.lineTo(1900, 50);
+        ctx.closePath();
+        ctx.fillStyle = "#8B4513";
+        ctx.fill();
+
+        // Draw windows
+        ctx.fillStyle = "#333";
+        ctx.fillRect(1300, 1030, 140, 140);
+        ctx.fillRect(2360, 1030, 140, 140);
+        
+        // Draw door
+        ctx.fillStyle = "#654321";
+        ctx.fillRect(1800, 1200, 200, 300);
+
+        // Draw trees
+        function drawTree(x, y) {
+            // Trunk
+            ctx.fillStyle = "#8B4513";
+            ctx.fillRect(x, y, 50, 150);
+            
+            // Leaves (circle canopy)
+            ctx.beginPath();
+            ctx.arc(x + 25, y - 50, 80, 0, Math.PI * 2);
+            ctx.fillStyle = "#006400";
+            ctx.fill();
+        }
+
+        // Place trees around the house
+        drawTree(1000, 1300);
+        drawTree(2700, 1300);
+        drawTree(500, 1400);
+        drawTree(3000, 1400);
+        drawTree(3500, 1450);
+        drawTree(200, 1450);
+    </script>
+</body>
+</html>

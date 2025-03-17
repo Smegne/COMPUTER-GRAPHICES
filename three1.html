@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Traditional House with Realistic Plants</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script>
+        // Scene Setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xaec6cf); // Light Blue Background
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // House Base (Cylinder)
+        const baseGeometry = new THREE.CylinderGeometry(2, 2, 2, 32);
+        const baseMaterial = new THREE.MeshStandardMaterial({ color: 0xd2691e }); // Brown wall color
+        const base = new THREE.Mesh(baseGeometry, baseMaterial);
+        scene.add(base);
+
+        // Roof (Cone)
+        const roofGeometry = new THREE.ConeGeometry(2.5, 2, 32);
+        const roofMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 }); // Thatched color
+        const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+        roof.position.y = 2;
+        scene.add(roof);
+
+        // Windows (Dark Gray)
+        function createWindow(x, y, z) {
+            const windowGeometry = new THREE.PlaneGeometry(0.5, 0.5);
+            const windowMaterial = new THREE.MeshStandardMaterial({ color: 0x444444 });
+            const window = new THREE.Mesh(windowGeometry, windowMaterial);
+            window.position.set(x, y, z);
+            scene.add(window);
+        }
+        createWindow(-1, 0.5, 2.01);
+        createWindow(1, 0.5, 2.01);
+
+        // Door (Brown)
+        const doorGeometry = new THREE.PlaneGeometry(0.7, 1);
+        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x654321 });
+        const door = new THREE.Mesh(doorGeometry, doorMaterial);
+        door.position.set(0, -0.5, 2.01);
+        scene.add(door);
+
+        // Function to Create a Detailed Tree 🌳
+        function createTree(x, z) {
+            // Trunk (Brown Cylinder)
+            const trunkGeometry = new THREE.CylinderGeometry(0.1, 0.2, 1.2, 16);
+            const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.set(x, -0.3, z);
+            scene.add(trunk);
+
+            // Branches (Smaller Cylinders)
+            const branchGeometry = new THREE.CylinderGeometry(0.05, 0.1, 0.5, 16);
+            const branchMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+
+            const branch1 = new THREE.Mesh(branchGeometry, branchMaterial);
+            branch1.position.set(x - 0.15, 0.5, z);
+            branch1.rotation.z = Math.PI / 4;
+            scene.add(branch1);
+
+            const branch2 = branch1.clone();
+            branch2.position.set(x + 0.15, 0.5, z);
+            branch2.rotation.z = -Math.PI / 4;
+            scene.add(branch2);
+
+            // Leaves (Green Spheres)
+            function addLeaf(offsetX, offsetY, offsetZ) {
+                const leafGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+                const leafMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+                const leaf = new THREE.Mesh(leafGeometry, leafMaterial);
+                leaf.position.set(x + offsetX, offsetY, z + offsetZ);
+                scene.add(leaf);
+            }
+            addLeaf(0, 1, 0);
+            addLeaf(-0.2, 0.8, 0.2);
+            addLeaf(0.2, 0.8, -0.2);
+            addLeaf(-0.2, 0.9, -0.2);
+            addLeaf(0.2, 0.9, 0.2);
+
+            // Roots (Brown Cylinders)
+            function addRoot(offsetX, offsetZ, rotation) {
+                const rootGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.4, 16);
+                const rootMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+                const root = new THREE.Mesh(rootGeometry, rootMaterial);
+                root.position.set(x + offsetX, -1.1, z + offsetZ);
+                root.rotation.x = rotation;
+                scene.add(root);
+            }
+            addRoot(0.2, 0, Math.PI / 4);
+            addRoot(-0.2, 0, -Math.PI / 4);
+            addRoot(0, 0.2, Math.PI / 4);
+            addRoot(0, -0.2, -Math.PI / 4);
+        }
+
+        // Creating Multiple Trees 🌳🌲
+        createTree(3, 3);
+        createTree(-3, -3);
+        createTree(3, -3);
+        createTree(-3, 3);
+        createTree(4, 0);
+        createTree(-4, 0);
+
+        // Light Source
+        const light = new THREE.PointLight(0xffffff, 1.5, 100);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+
+        // Camera Position
+        camera.position.z = 6;
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            base.rotation.y += 0.005;
+            roof.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Window Resize Handling
+        window.addEventListener("resize", () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+    </script>
+</body>
+</html>

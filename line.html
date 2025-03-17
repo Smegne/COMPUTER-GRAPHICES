@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="mycanvas" width="1000" height="725" style="border:1px solid black"></canvas>
+    <script>
+        const canvas= document.getElementById("mycanvas");
+        const ctx= canvas.getContext("2d");
+        ctx.fillStyle="green";
+         ctx.fillRect(250,300,470,300)
+// window one
+         ctx.fillStyle="red";
+
+         ctx.fillRect(250,380,100,95)
+
+// window two
+         ctx.fillStyle="red";
+
+         ctx.fillRect(620,380,100,95)
+
+// here is door
+        ctx.fillStyle="red";
+
+         ctx.fillRect(420,450,120,150)
+
+        //  roof
+
+        ctx.beginPath();
+         ctx.moveTo(500,20);
+
+         ctx.lineTo(775,300);
+          ctx.lineTo(200,300);
+         
+         ctx.lineWidth=10;
+         ctx.strokeStyle="red";
+
+         ctx.lineTo(500,20);
+        ctx.stroke();
+
+       
+         
+     
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPUTER GRAPHICES
+
+    </title>
+    <style>
+
+        .mycanvas{
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="mycanvas">
+    <canvas id="mycanvas" width="200" height="100" style="border:1px solid black"></canvas>
+</div>
+    <script>
+        const canvas= document.getElementById("mycanvas");
+        const ctx= canvas.getContext("2d");
+        // ctx.fillStyle="green";
+        // ctx.fillRect(25,15,150,75)
+        ctx.beginPath();
+         ctx.moveTo(10,0);
+         ctx.lineTo(200,100);
+         ctx.lineWidth=10;
+         ctx.strokeStyle="green";
+         ctx.lineCap="round;"
+        //  ctx.stroke();
+        ctx.arc(125,50,40,0,2*Math.PI);
+        ctx.fillStyle="green";
+        ctx.stroke();
+     
+    </script>
+</body>
+</html>

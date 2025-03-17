@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Animated Woman Enters House</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script>
+        let scene, camera, renderer, woman, mixer, door, clock;
+        
+        // Setup Scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xaec6cf);
+
+        // Camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(3, 2, 6);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Lights
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 10, 5);
+        scene.add(light);
+
+        // Load 3D Woman Model
+        const loader = new THREE.GLTFLoader();
+        loader.load("https://models.readyplayer.me/3d/avatar.glb", function (gltf) {
+            woman = gltf.scene;
+            woman.position.set(-5, 0, 0);
+            woman.scale.set(1.2, 1.2, 1.2);
+            scene.add(woman);
+
+            // Load Animation
+            mixer = new THREE.AnimationMixer(woman);
+            gltf.animations.forEach((clip) => {
+                mixer.clipAction(clip).play();
+            });
+        });
+
+        // House Base
+        const houseGeometry = new THREE.CylinderGeometry(2, 2, 2, 32);
+        const houseMaterial = new THREE.MeshStandardMaterial({ color: 0xd2691e });
+        const house = new THREE.Mesh(houseGeometry, houseMaterial);
+        scene.add(house);
+
+        // Roof
+        const roofGeometry = new THREE.ConeGeometry(2.5, 2, 32);
+        const roofMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+        const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+        roof.position.y = 2;
+        scene.add(roof);
+
+        // Door
+        const doorGeometry = new THREE.PlaneGeometry(0.7, 1);
+        const doorMaterial = new THREE.MeshStandardMaterial({ color: 0x654321 });
+        door = new THREE.Mesh(doorGeometry, doorMaterial);
+        door.position.set(0, -0.5, 2.01);
+        scene.add(door);
+
+        // Clock for Animation
+        clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (mixer) mixer.update(clock.getDelta());
+
+            // Move Woman Towards Door
+            if (woman && woman.position.x < 0) {
+                woman.position.x += 0.02;
+            } else if (woman && woman.position.x >= 0) {
+                // Open Door
+                door.rotation.y = Math.PI / 2;
+
+                // Delay then move inside
+                setTimeout(() => {
+                    woman.position.z -= 0.02;
+                }, 1000);
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+    </script>
+</body>
+</html>
